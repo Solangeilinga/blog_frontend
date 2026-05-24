@@ -4,6 +4,19 @@ import Link from "next/link";
 import { BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 import { categoriesApi, type ApiCategory } from "@/lib/api";
 
+// CORRIGÉ : fonction de normalisation de slug
+// Avant : .replace(/\s+/g, "") → "Développement perso" devenait "/développementperso"
+// Après : suppression des accents + remplacement espaces par tirets → "/developpement-perso"
+function toSlug(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize("NFD")                    // décompose les caractères accentués
+    .replace(/[\u0300-\u036f]/g, "")    // supprime les diacritiques (accents)
+    .replace(/[^a-z0-9\s-]/g, "")       // supprime les caractères spéciaux
+    .trim()
+    .replace(/\s+/g, "-");              // remplace les espaces par des tirets
+}
+
 const Sidebar = () => {
   const [open,       setOpen]       = useState(false);
   const [categories, setCategories] = useState<ApiCategory[]>([]);
@@ -49,7 +62,9 @@ const Sidebar = () => {
             {categories.map((cat) => (
               <li key={cat.id}>
                 <Link
-                  href={`/${cat.slug?.toLowerCase() ?? cat.name.toLowerCase().replace(/\s+/g, "")}`}
+                  // CORRIGÉ : utilise toSlug() comme fallback si le slug DB est absent
+                  // Résultat : "/developpement-perso" au lieu de "/développementperso"
+                  href={`/${cat.slug ?? toSlug(cat.name)}`}
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium bg-base-100 border border-base-300 text-base-content hover:bg-primary hover:text-primary-content hover:border-primary transition-all duration-200 group"
                 >

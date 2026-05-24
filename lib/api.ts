@@ -3,7 +3,9 @@
 // - refresh token automatique si 401
 // - messages d'erreur traduits en français
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+// CORRIGÉ : BASE_URL exporté pour être réutilisé dans les Server Components
+// (app/page.tsx, app/article/[id]/page.tsx) — plus de duplication
+export const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface ApiUser {
@@ -166,11 +168,11 @@ export const articlesApi = {
     return apiFetch<ApiPaginatedArticles>(`/articles${qs}`, {}, false);
   },
 
-  getOne:    (id: number) => apiFetch<ApiArticle>(`/articles/${id}`, {}, false),
-  getSimilar:(id: number) => apiFetch<ApiArticle[]>(`/articles/${id}/related`, {}, false),
-  create:    (formData: FormData) => apiFetchForm<{ message: string; id: number }>("/articles", formData),
-  update:    (id: number, formData: FormData) => apiFetchForm<{ message: string }>(`/articles/${id}`, formData, "PUT"),
-  delete:    (id: number) => apiFetch<{ message: string }>(`/articles/${id}`, { method: "DELETE" }),
+  getOne:     (id: number) => apiFetch<ApiArticle>(`/articles/${id}`, {}, false),
+  getSimilar: (id: number) => apiFetch<ApiArticle[]>(`/articles/${id}/related`, {}, false),
+  create:     (formData: FormData) => apiFetchForm<{ message: string; id: number }>("/articles", formData),
+  update:     (id: number, formData: FormData) => apiFetchForm<{ message: string }>(`/articles/${id}`, formData, "PUT"),
+  delete:     (id: number) => apiFetch<{ message: string }>(`/articles/${id}`, { method: "DELETE" }),
 
   like: (id: number) =>
     apiFetch<{ liked: boolean; nb_likes: number }>(`/articles/${id}/like`, { method: "POST" }),
@@ -202,24 +204,24 @@ export const favorisApi = {
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 export interface AuthorStats {
-  total_articles:    number;
-  articles_publies:  number;
+  total_articles:      number;
+  articles_publies:    number;
   articles_brouillons: number;
-  total_vues:        number;
-  total_likes:       number;
-  total_comments:    number;
+  total_vues:          number;
+  total_likes:         number;
+  total_comments:      number;
 }
 
 export interface DashboardArticle {
-  id:           number;
-  titre:        string;
-  statut:       "publie" | "brouillon";
-  vues:         number;
-  nb_likes:     number;
-  nb_comments:  number;
+  id:            number;
+  titre:         string;
+  statut:        "publie" | "brouillon";
+  vues:          number;
+  nb_likes:      number;
+  nb_comments:   number;
   date_creation: string;
-  categorie:    string | null;
-  image:        string | null;
+  categorie:     string | null;
+  image:         string | null;
 }
 
 export interface DashboardArticlesPaginated {
@@ -246,8 +248,7 @@ export const dashboardApi = {
     apiFetch<{ message: string }>(`/articles/${id}`, { method: "DELETE" }),
 };
 
-// Extension authApi pour vérification email
-// (s'ajoute aux fonctions existantes via export séparé)
+// ── Vérification email ────────────────────────────────────────────────────────
 export const emailVerifyApi = {
   verify: (token: string) =>
     apiFetch<{ message: string }>(`/auth/verify-email?token=${token}`, {}, false),

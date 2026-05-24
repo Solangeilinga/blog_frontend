@@ -1,8 +1,11 @@
 'use client';
 
+// CORRIGÉ : fichier déplacé de app/Contact/page.tsx → app/contact/page.tsx
+// L'URL passe de /Contact (avec majuscule) à /contact (lowercase, standard web)
+
 import { useState } from 'react';
 import Button from '@/components/Button';
-import FormControl from "../../components/Formcontrol";
+import FormControl from '../../components/Formcontrol';
 import Modal from '@/components/Modal';
 import Hero from '@/components/Hero';
 
@@ -19,7 +22,6 @@ export default function ContactForm() {
     message: '',
   });
 
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -30,41 +32,29 @@ export default function ContactForm() {
   };
 
   const validateForm = () => {
-    const newErrors = {
-      name: '',
-      email: '',
-      message: '',
-    };
+    const newErrors = { name: '', email: '', message: '' };
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Le nom est requis';
-    }
-
+    if (!formData.name.trim()) newErrors.name = 'Le nom est requis';
     if (!formData.email.trim()) {
-      newErrors.email = 'L\'email est requis';
+      newErrors.email = "L'email est requis";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email invalide';
     }
-
-    if (!formData.message.trim()) {
-      newErrors.message = 'Le message est requis';
-    }
+    if (!formData.message.trim()) newErrors.message = 'Le message est requis';
 
     setErrors(newErrors);
-    return !Object.values(newErrors).some(error => error !== '');
+    return !Object.values(newErrors).some((error) => error !== '');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-     
       (document.getElementById('contact_modal') as HTMLDialogElement).showModal();
-     
     }
   };
 
   return (
-    <main className='pt-4'>
+    <main className="pt-4">
       <Hero
         backgroundImage="/assets/cons.png"
         title="Contactez-Nous"
@@ -86,10 +76,10 @@ export default function ContactForm() {
           </p>
           <div className="flex flex-col gap-5">
             {[
-              ["📍", "12 Avenue de l'Indépendance, Ouagadougou"],
-              ["📞", "+226 25 30 00 00"],
-              ["✉️", "contact@eduBlog.bf"],
-              ["🕗", "Lun–Ven : 08h00 – 17h00"],
+              ['📍', "12 Avenue de l'Indépendance, Ouagadougou"],
+              ['📞', '+226 25 30 00 00'],
+              ['✉️', 'contact@eduBlog.bf'],
+              ['🕗', 'Lun–Ven : 08h00 – 17h00'],
             ].map(([icon, text]) => (
               <div key={text as string} className="flex items-start gap-4">
                 <span className="text-lg mt-0.5">{icon}</span>
@@ -146,12 +136,7 @@ export default function ContactForm() {
         </div>
       </div>
 
-      
-      <Modal
-        id="contact_modal"
-        title="Message envoyé !"
-        trigger=""  
-      >
+      <Modal id="contact_modal" title="Message envoyé !" trigger="">
         <div className="text-center">
           <p className="text-lg">Votre message a bien été envoyé.</p>
           <p className="text-sm text-gray-500 mt-2">

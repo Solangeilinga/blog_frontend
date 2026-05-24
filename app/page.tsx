@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link        from "next/link";
 import ArticleCard from "@/components/ArticleCard";
-import Sidebar from "@/components/Sidebar";
-import Hero from "@/components/Hero";
-import Pagination from "@/components/Pagination";
-import { type ApiPaginatedArticles } from "@/lib/api";
+import Sidebar     from "@/components/Sidebar";
+import Hero        from "@/components/Hero";
+import Pagination  from "@/components/Pagination";
+// CORRIGÉ : BASE_URL importé depuis lib/api — plus de duplication
+import { BASE_URL, type ApiPaginatedArticles } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "EduBlog — Votre avenir professionnel commence ici",
@@ -21,10 +22,9 @@ export const metadata: Metadata = {
 const EMPTY: ApiPaginatedArticles = { data: [], pagination: { total: 0, page: 1, limit: 12, totalPages: 0 } };
 
 async function fetchArticles(page = 1): Promise<ApiPaginatedArticles> {
-  const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
   try {
     const res = await fetch(
-      `${BASE}/articles?statut=publie&page=${page}&limit=12`,
+      `${BASE_URL}/articles?statut=publie&page=${page}&limit=12`,
       { next: { revalidate: 60 } }
     );
     if (!res.ok) return EMPTY;
