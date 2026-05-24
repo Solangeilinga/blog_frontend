@@ -8,23 +8,27 @@ interface ButtonProps {
   wide?: boolean;
   type?: "button" | "submit" | "reset";
   className?: string;
+  // CORRIGÉ : prop size ajoutée pour correspondre à l'usage dans ArticleActions
+  size?: "xs" | "sm" | "md" | "lg";
 }
 
-const Button = ({ 
-  children, 
-  onClick, 
-  variant = "primary", 
-  disabled, 
+const Button = ({
+  children,
+  onClick,
+  variant = "primary",
+  disabled,
   wide,
   type = "button",
-  className = "" 
+  size,
+  className = "",
 }: ButtonProps) => {
+  const sizeClass = size ? `btn-${size}` : "";
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`btn btn-${variant} ${wide ? "w-full" : ""} ${className}`.trim()}
+      className={`btn btn-${variant} ${sizeClass} ${wide ? "w-full" : ""} ${className}`.trim()}
     >
       {children}
     </button>
