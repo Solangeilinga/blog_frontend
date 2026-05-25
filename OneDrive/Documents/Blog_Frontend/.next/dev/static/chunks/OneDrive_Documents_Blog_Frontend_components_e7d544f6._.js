@@ -62,16 +62,17 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$Blog_Frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/OneDrive/Documents/Blog_Frontend/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 ;
-const Button = ({ children, onClick, variant = "primary", disabled, wide, type = "button", className = "" })=>{
+const Button = ({ children, onClick, variant = "primary", disabled, wide, type = "button", size, className = "" })=>{
+    const sizeClass = size ? `btn-${size}` : "";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$OneDrive$2f$Documents$2f$Blog_Frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
         type: type,
         onClick: onClick,
         disabled: disabled,
-        className: `btn btn-${variant} ${wide ? "w-full" : ""} ${className}`.trim(),
+        className: `btn btn-${variant} ${sizeClass} ${wide ? "w-full" : ""} ${className}`.trim(),
         children: children
     }, void 0, false, {
         fileName: "[project]/OneDrive/Documents/Blog_Frontend/components/Button.tsx",
-        lineNumber: 23,
+        lineNumber: 27,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
